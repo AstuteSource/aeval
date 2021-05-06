@@ -2,7 +2,6 @@ import ast
 import random
 import string
 from typing import Any, Dict, Set, Type, Union
-import sys
 
 
 class DiscoverExposedAsync(ast.NodeVisitor):

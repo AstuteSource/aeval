@@ -12,6 +12,15 @@ def test_version():
 
 
 @pytest.mark.asyncio
+async def test_simple_value():
+    scope = dict(items=[])
+    value = await aeval(dedent('''
+    10
+    '''), scope, None)
+    assert value == 10
+
+
+@pytest.mark.asyncio
 async def test_sync_for():
     scope = dict(items=[])
     await aeval(dedent('''
@@ -178,16 +187,9 @@ async def test_unexposed_class_annotated_assign():
     assert scope['Foo'].y == 'abc'
 
 
-# @pytest.mark.asyncio
-# async def test_raise():
-#     scope = dict(x=1)
-#     try:
-#         await aeval(dedent('''
-#         raise Exception('ha')
-#         '''), scope, None)
-#     except:
-#         import traceback
-#         etype, ex, tb = sys.exc_info()
-#         traceback.print_exc()
-
-#     assert 'x' not in scope
+@pytest.mark.asyncio
+async def test_raise():
+    with pytest.raises(Exception):
+        await aeval(dedent('''
+        raise Exception('ha')
+        '''), dict(), None)
